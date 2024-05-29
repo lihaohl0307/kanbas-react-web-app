@@ -12,6 +12,7 @@ import StylingSlider from "./StylingSlider";
 import StylingAddons from "./StylingAddons";
 import ResponsiveForm from "./ResponsiveForm";
 import NavTab from "./NavTab";
+import NavCard from "./NavCard";
 export default function Lab2() {
     return (
         // .container class centers the content with margins on either side and defines several responsive design thresholds.
@@ -314,6 +315,7 @@ export default function Lab2() {
             <StylingAddons />
             <ResponsiveForm />
             <NavTab />
+            <NavCard />
             
         </div>
     )
