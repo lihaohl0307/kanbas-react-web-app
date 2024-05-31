@@ -5,21 +5,19 @@ import { Route, Routes, Navigate } from "react-router";
 
 export default function Kanbas() {
     return (
-        <div id="wd-kanbas">
-        <table width="100%">
-          <tr>
-            <td valign="top">
+      <div id="wd-kanbas"> 
+        <div className="d-flex">
+            <div className="d-none d-md-block bg-black">
               <KanbasNavigation />
-            </td>
-            <td valign="top">
-            <Routes>
-                <Route path="/" element={<Navigate to="Dashboard" />} />
-                <Route path="Dashboard" element={<Dashboard />} />
-                <Route path="Courses/:id/*" element={<Courses />} />
-            </Routes>
-            </td>
-          </tr>
-        </table>
-      </div>
+            </div>  
+            <div className="flex-fill p-4"> 
+              <Routes>
+                  <Route path="/" element={<Navigate to="Dashboard" />} />
+                  <Route path="Dashboard" element={<Dashboard />} />
+                  <Route path="Courses/:id/*" element={<Courses />} />
+              </Routes>
+            </div>
+        </div> 
+      </div>     
 );}
   
