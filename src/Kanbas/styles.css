@@ -1,0 +1,10 @@
+/* The styles.css file is a good place to override the Bootstrap styling for the whole site.  */
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body * {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
