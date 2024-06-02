@@ -6,8 +6,13 @@ import { BsGripVertical } from "react-icons/bs";
 export default function Modules() {
     return (
     <div id="wd-modules">
-        <ModulesControls /><br /><br /><br /><br />
-        <ul id="wd-modules" className="list-group rounded-0">
+        {/* <ModulesControls /><br /><br /><br /><br /> */}
+        <ul id="wd-modules" className="list-group">
+            {/* use <li> directly instead of group component in <div> can remove the bullet points*/}
+            <li className="list-group-item" style={{border: "none"}}>
+                <ModulesControls />
+                <br /><br /><br />
+            </li>
             <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                 <div className="wd-title p-3 ps-2 bg-secondary">
                     <BsGripVertical className="me-2 fs-3" />
