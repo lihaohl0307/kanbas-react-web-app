@@ -44,7 +44,7 @@ export default function Assignments() {
                       <IoEllipsisVertical className="fs-4"/>
                     </div>
                 </div>
-              <ul id="wd-assignment-list" className="list-group rounded-0">
+              <ul id="wd-assignment-list" className="list-group rounded-0 border-5 border-start border-success">
                 <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
                   <BsGripVertical className="me-3 fs-4" style={{flexShrink: "0"}}/>
                   <TbNotebook className="me-3 fs-2" style={{ color: 'green', flexShrink: "0"}} />

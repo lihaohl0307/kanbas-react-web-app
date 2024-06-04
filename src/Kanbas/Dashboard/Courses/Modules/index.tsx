@@ -19,7 +19,7 @@ export default function Modules() {
                     Week 1
                     <ModulesControlButtons />
                 </div>
-                <ul className="wd-lessons list-group rounded-0">
+                <ul className="wd-lessons list-group rounded-0 border-5 border-start border-success">
                     <li className="wd-lesson list-group-item p-3 ps-1">
                         <BsGripVertical className="me-2 fs-3" />
                         Learning Objects
@@ -53,7 +53,7 @@ export default function Modules() {
                     Week 2
                     <ModulesControlButtons />
                     </div>
-                <ul className="wd-lessons list-group rounded-0">
+                <ul className="wd-lessons list-group rounded-0 border-5 border-start border-success">
                     <li className="wd-lesson list-group-item p-3 ps-1">
                         <BsGripVertical className="me-2 fs-3" />
                         Learning Objects
