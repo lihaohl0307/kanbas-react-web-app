@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { courses } from "../Database";
+
 export default function Dashboard() {
     return (
       <div id="wd-dashboard">
@@ -5,7 +8,27 @@ export default function Dashboard() {
         <h2 id="wd-dashboard-published">Published Courses (12)</h2> <hr />
         <div id="wd-dashboard-courses" className="row" >
           <div className="row row-cols-1 row-cols-md-4 row-cols-lg-6 row-cols-xl-8">
-            <div className="wd-dashboard-course col"  style={{ width: "270px", marginBottom: "30px", paddingRight: '15px', paddingLeft: '15px' }}>
+            {courses.map((course) => (
+              <div className="wd-dashboard-course col" style={{ width: "300px", marginBottom: "30px"}}>
+                <Link to={`/Kanbas/Courses/${course._id}/Home`} className="text-decoration-none">
+                  <div className="card rounded-3 overflow-hidden">
+                    <img src="https://www.popwebdesign.net/popart_blog/wp-content/uploads/2018/03/reactjs.jpg" height={160} />
+                    <div className="card-body">
+                      <span className="wd-dashboard-course-link"
+                        style={{ textDecoration: "none", color: "navy", fontWeight: "bold" }} >
+                            {course.name}
+                      </span>
+                      <p className="wd-dashboard-course-title card-text" style={{ maxHeight: 53, overflow: "hidden" }}>
+                        {course.description}
+                      </p>
+                      <Link to={`/Kanbas/Courses/${course._id}/Home`} className="btn btn-primary">Go</Link>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+
+            {/* <div className="wd-dashboard-course col"  style={{ width: "270px", marginBottom: "30px", paddingRight: '15px', paddingLeft: '15px' }}>
               <div className="card">
                 <img src="https://www.popwebdesign.net/popart_blog/wp-content/uploads/2018/03/reactjs.jpg" height={150} />
                 <div className="card-body">
@@ -71,9 +94,9 @@ export default function Dashboard() {
                     <a href="#/Kanbas/Courses/1234/Home" className="btn btn-primary"> Go </a>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="wd-dashboard-course col"  style={{ width: "270px", marginBottom: "30px", paddingRight: '15px', paddingLeft: '15px' }}>
+            {/* <div className="wd-dashboard-course col"  style={{ width: "270px", marginBottom: "30px", paddingRight: '15px', paddingLeft: '15px' }}>
               <div className="card">
                 <img src="images/OOP.png" height={150}/>
                 <div className="wd-dashboard-course card-body"> 
@@ -122,7 +145,7 @@ export default function Dashboard() {
                     <a href="#/Kanbas/Courses/1234/Home" className="btn btn-primary"> Go </a>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
