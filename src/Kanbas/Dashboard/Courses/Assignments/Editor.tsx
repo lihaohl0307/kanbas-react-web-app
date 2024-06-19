@@ -1,21 +1,31 @@
+import { useParams } from "react-router";
+import { assignments } from "../../../Database";
+import { Link } from "react-router-dom";
+
 export default function AssignmentEditor() {
+    const { cid, aid } = useParams();
+    const assignment = assignments && assignments.find(assignment => assignment._id === aid);
+    const title = assignment?.title;
+
     return (
     <div id="wd-assignments-editor">
         <div className="form-group mb-3">
             <label htmlFor="wd-name" className="form-label"><b>Assignment Name</b></label>
-            <input id="wd-name" className="form-control" value="A1"/>
+            <input id="wd-name" className="form-control" value={`${aid} ${title}`}/>
         </div>
         <div className="form-group mb-3">
-            <textarea id="wd-description" className="form-control" rows={8}>
-                The assignment is available online
-                Submit a link to the landing page of your Web application
-                running on Netlify. 
-                The landing page should include the following: 
-                Your full name and section
-                Links to each lab assignments
-                Link to the Kanbas application
-                Links to all relevant source code repositories
-                The Kanbas application should include a link to navigate back to the landing page.
+            <textarea id="wd-description" className="form-control" rows={8} defaultValue={`
+        The assignment is available online
+
+        Submit a link to the landing page of your Web application running on Netlify.
+
+        The landing page should include the following:
+
+        - Your full name and section
+        -  Links to each lab assignment
+        - Link to the Kanban application
+        - Links to all relevant source code repositories
+        - The Kanban application should include a link to navigate back to the landing page.`}>
             </textarea>
         </div>
         <div className="form-group row mb-3">
@@ -111,10 +121,10 @@ export default function AssignmentEditor() {
         <br />
         <hr />
         <button className="btn btn-danger float-end">
-            Save
+            <Link to={`/Kanbas/Courses/${cid}/Assignments`}>Save</Link>
         </button>
         <button className="btn btn-secondary float-end me-1">
-            Cancel
+            <Link to={`/Kanbas/Courses/${cid}/Assignments`}>Cancel</Link>
         </button>
         
     </div>

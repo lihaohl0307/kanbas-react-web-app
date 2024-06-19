@@ -11,7 +11,7 @@ import { assignments } from "../../../Database";
 import { Link } from "react-router-dom";
 
 export default function Assignments() {
-  const { cid, id } = useParams();
+  const { cid, aid } = useParams();
   return (
       <div id="wd-assignments">
         <div className="d-flex flex-row">

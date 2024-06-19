@@ -9,7 +9,7 @@ import Grades from "./Grades";
 import { courses } from "../../Database";
 
 export default function Courses() {
-    const { cid, aid } = useParams();
+    const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const { pathname } = useLocation();
     return (
