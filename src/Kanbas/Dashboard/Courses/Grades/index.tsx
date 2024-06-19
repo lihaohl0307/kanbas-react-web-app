@@ -1,7 +1,29 @@
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import ButtonBar from "./buttonbar";
 import { LuFilter } from "react-icons/lu";
+import { users, enrollments, grades, assignments} from "../../../Database";
+import { useParams } from "react-router";
+
 export default function Grades() {
+    const { cid } = useParams();
+    // Find the enrollment for the current course
+    const currentEnrollments = enrollments.filter(enrollment => enrollment.course === cid);
+    console.log(currentEnrollments);
+
+    // Map the enrollments to user details
+    const enrollmentDetails = currentEnrollments.map(enrollment => {
+        const user = users.find(user => user._id === enrollment.user);
+        return {
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            _id: user?._id
+        };
+    });
+    console.log(enrollmentDetails);
+
+    // Extract assignments for the current course
+    const courseAssignments = assignments.filter(assignment => assignment.course === cid);
+
     return (
         <div id="wd-grades">
             <div className="row">
@@ -72,38 +94,28 @@ export default function Grades() {
                         <thead className="thead-light align-middle">
                             <tr>
                                 <th>Student Name</th>
-                                <th>A1 SETUP<br/><small>Out of 100</small></th>
-                                <th>A2 HTML<br/><small>Out of 100</small></th>
-                                <th>A3 CSS<br/><small>Out of 100</small></th>
-                                <th>A4 BOOTSTRAP<br/><small>Out of 100</small></th>
+                                {assignments.filter(assignment => assignment.course === cid)
+                                    .map((assignment, index) => (
+                                    <th key={index}>
+                                        {assignment._id}
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Han Bao</td>
-                                <td>100%</td>
-                                <td>100%</td>
-                                <td className="editable-cell-1">
-                                    <input type="text" className="form-control" placeholder="88.03" />
-                                </td>
-                                <td>98.99%</td>
-                            </tr>
-                            <tr>
-                                <td>Siran Cao</td>
-                                <td>100%</td>
-                                <td>100%</td>
-                                <td className="editable-cell-2">
-                                    <input type="text" className="form-control" placeholder="100" />
-                                </td>
-                                <td>100%</td>
-                            </tr>
-                            <tr>
-                                <td>Mahi Sai Srinivas Bobbili</td>
-                                <td>100%</td>
-                                <td>96.67%</td>
-                                <td>98.37%</td>
-                                <td>100%</td>
-                            </tr>
+                        <tbody>                       
+                            {enrollmentDetails.map((details, index) => (
+                                <tr key={index}>
+                                    <td>{details.firstName} {details.lastName}</td>
+                                    {courseAssignments.map((assignment, index) => {
+                                        const grade = grades.find(grade => grade.student === details._id && grade.assignment === assignment._id);
+                                        return (
+                                            <td key={index}>
+                                                {grade ? grade.grade : 'N/A'}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
