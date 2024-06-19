@@ -6,8 +6,13 @@ import { GiNotebook } from "react-icons/gi";
 import GreenCheckmark from "../Modules/GreenCheckmark";
 import { TbNotebook } from "react-icons/tb";
 import { MdCheckCircle } from "react-icons/md";
+import { useParams } from "react-router";
+import { assignments } from "../../../Database";
+import { Link } from "react-router-dom";
+
 export default function Assignments() {
-    return (
+  const { cid, id } = useParams();
+  return (
       <div id="wd-assignments">
         <div className="d-flex flex-row">
           <div className="input-group" style={{ width: '300px' }}>
@@ -45,7 +50,29 @@ export default function Assignments() {
                     </div>
                 </div>
               <ul id="wd-assignment-list" className="list-group rounded-0 border-5 border-start border-success">
-                <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
+                {assignments && 
+                  assignments.filter((assignment) => cid === assignment.course)
+                    .map((assignment) => (
+                      <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
+                        <BsGripVertical className="me-3 fs-4" style={{flexShrink: "0"}}/>
+                        <TbNotebook className="me-3 fs-2" style={{ color: 'green', flexShrink: "0"}} />
+                        <div className="flex-grow-1">
+                            <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link fw-bold text-black" >
+                              {assignment._id}: {assignment.title}
+                            </Link>
+                            <div className="fs-6">
+                                <span className="text-danger me-1">Multiple Modules</span>
+                                <span>| <b>Not available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts</span>
+                            </div>
+                        </div>
+                        <MdCheckCircle className="fs-4 text-success me-2" style={{flexShrink: "0"}} />
+                        <IoEllipsisVertical className="fs-4" style={{flexShrink: "0"}}/>
+                      </li>
+                    )
+
+                )}
+
+                {/* <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
                   <BsGripVertical className="me-3 fs-4" style={{flexShrink: "0"}}/>
                   <TbNotebook className="me-3 fs-2" style={{ color: 'green', flexShrink: "0"}} />
                   <div className="flex-grow-1">
@@ -60,8 +87,8 @@ export default function Assignments() {
                   </div>
                   <MdCheckCircle className="fs-4 text-success me-2" style={{flexShrink: "0"}} />
                   <IoEllipsisVertical className="fs-4" style={{flexShrink: "0"}}/>
-                </li>
-                <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
+                </li> */}
+                {/* <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
                   <BsGripVertical className="me-3 fs-4" style={{flexShrink: "0"}}/>
                   <TbNotebook className="me-3 fs-2" style={{ color: 'green', flexShrink: "0"}} />
                   <div className="flex-grow-1">
@@ -76,8 +103,8 @@ export default function Assignments() {
                   </div>
                   <MdCheckCircle className="fs-4 text-success me-2" style={{flexShrink: "0"}} />
                   <IoEllipsisVertical className="fs-4" style={{flexShrink: "0"}}/>
-                </li>
-                <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
+                </li> */}
+                {/* <li className="wd-assignment-list-item list-group-item p-3 d-flex align-items-center">
                   <BsGripVertical className="me-3 fs-4" style={{flexShrink: "0"}}/>
                   <TbNotebook className="me-3 fs-2" style={{ color: 'green', flexShrink: "0"}} />
                   <div className="flex-grow-1">
@@ -92,7 +119,7 @@ export default function Assignments() {
                   </div>
                   <MdCheckCircle className="fs-4 text-success me-2" style={{flexShrink: "0"}} />
                   <IoEllipsisVertical className="fs-4" style={{flexShrink: "0"}}/>
-                </li>
+                </li> */}
               </ul>
             </li>
           </ul>

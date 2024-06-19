@@ -1,10 +1,22 @@
 import "./index.css";
 import { Link, useParams, useLocation } from "react-router-dom";
-
 export default function CoursesNavigation() {
+    const {cid} = useParams();
+    const {pathname} = useLocation();
+    const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades"];
+
     return (
       <div id="wd-courses-navigation" className="list-group fs-5 rounded-0 me-2">
-        <a id="wd-course-home-link" href="#/Kanbas/Courses/1234/Home"
+        {
+          links.map((link,index) => 
+            <Link key={index} to={`/Kanbas/Courses/${cid}/${link}`}
+              className={`list-group-item border border-0
+                ${pathname.includes(link) ? "active" : "text-danger"}`}>
+              {link}
+            </Link>
+          ) 
+        }
+        {/* <a id="wd-course-home-link" href="#/Kanbas/Courses/1234/Home"
         className="list-group-item active border border-0" >Home</a>
         <a id="wd-course-modules-link" href="#/Kanbas/Courses/1234/Modules"
         className="list-group-item text-danger border border-0">Modules
@@ -18,7 +30,7 @@ export default function CoursesNavigation() {
         <a id="wd-course-assignments-link" href="#/Kanbas/Courses/1234/Quizzes"
         className="list-group-item text-danger border border-0">Quizzes</a>
         <a id="wd-course-grades-link" href="#/Kanbas/Courses/1234/Grades"
-        className="list-group-item text-danger border border-0">Grades</a>
-  </div> 
+        className="list-group-item text-danger border border-0">Grades</a> */}
+    </div> 
   );
 }
