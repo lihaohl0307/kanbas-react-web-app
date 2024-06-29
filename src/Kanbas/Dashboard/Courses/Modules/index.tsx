@@ -35,8 +35,6 @@ export default function Modules() {
                 </li>
         ))}
 
-
-
             {/* use <li> directly instead of group component in <div> can remove the bullet points*/}
             {/* <li className="list-group-item" style={{border: "none"}}>
                 <ModulesControls />
