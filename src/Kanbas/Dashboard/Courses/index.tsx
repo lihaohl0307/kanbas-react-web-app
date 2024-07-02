@@ -3,12 +3,12 @@ import Modules from "./Modules";
 import { Route, Routes, Navigate, useParams, useLocation } from "react-router";
 import Home from "./Home/idex";
 import Assignments from "./Assignments";
-import AssignmentsEditor from "./Assignments/Editor";
+import AssignmentsEditor from "./Assignments/AssignmentEditor";
 import { FaAlignJustify } from 'react-icons/fa';
 import Grades from "./Grades";
-import { courses } from "../../Database";
+// import { courses } from "../../Database";
 
-export default function Courses() {
+export default function Courses({courses}:{courses : any[];}) {
     const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const { pathname } = useLocation();
@@ -29,6 +29,7 @@ export default function Courses() {
                     <Route path="Modules" element={<Modules />} />
                     <Route path="Assignments" element={<Assignments />} />
                     <Route path="Assignments/:aid" element={<AssignmentsEditor />} />
+                    <Route path="Assignments/new" element={<AssignmentsEditor />} />
                     <Route path="Grades" element={<Grades />}/>
                 </Routes>
             </div>

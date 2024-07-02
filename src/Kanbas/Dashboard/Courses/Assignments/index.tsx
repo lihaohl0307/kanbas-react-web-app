@@ -9,6 +9,8 @@ import { MdCheckCircle } from "react-icons/md";
 import { useParams } from "react-router";
 import { assignments } from "../../../Database";
 import { Link } from "react-router-dom";
+import Editor from "./AssignmentEditor";
+import AssignmentEditor from "./AssignmentEditor";
 
 export default function Assignments() {
   const { cid, aid } = useParams();
@@ -126,3 +128,7 @@ export default function Assignments() {
         </div>
       </div>
 );}
+
+function useRouter() {
+  throw new Error("Function not implemented.");
+}
