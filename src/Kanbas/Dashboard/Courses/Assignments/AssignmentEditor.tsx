@@ -48,9 +48,9 @@ export default function AssignmentEditor() {
             <input 
                 id="wd-name" 
                 className="form-control" 
-                value={existingAssignment? `${aid} ${title}`: "New Assignment"}
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                />
+            />
         </div>
         <div className="form-group mb-3">
             <textarea 

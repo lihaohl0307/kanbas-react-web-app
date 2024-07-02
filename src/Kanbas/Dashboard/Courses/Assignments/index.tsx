@@ -93,7 +93,7 @@ export default function Assignments() {
                             </Link>
                             <div className="fs-6">
                                 <span className="text-danger me-1">Multiple Modules</span>
-                                <span>| <b>Not available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts</span>
+                                <span>| <b>Not available until</b> {assignment.availableFrom} | <b>Due</b> {assignment.dueDate} | {assignment.points} pts</span>
                             </div>
                         </div>
                         <MdCheckCircle className="fs-4 text-success me-2" style={{flexShrink: "0"}} />
