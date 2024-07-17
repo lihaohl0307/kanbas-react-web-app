@@ -40,7 +40,7 @@ export default function WorkingWithArrays() {
 
         <h3>Deleting from an Array</h3>
         <a id="wd-retrieve-completed-todos" className="btn btn-primary float-end" href={`${API}/${todo.id}/delete`}>
-        Delete Todo with ID = {todo.id} </a>
+            Delete Todo with ID = {todo.id} </a>
         <input value={todo.id} className="form-control w-50" 
             onChange={(e) => setTodo({ ...todo, id: e.target.value })}/><hr/>
 
