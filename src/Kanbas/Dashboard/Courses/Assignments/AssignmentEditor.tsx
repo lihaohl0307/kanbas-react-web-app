@@ -2,8 +2,9 @@ import { useNavigate, useParams } from "react-router";
 import { assignments } from "../../../Database";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { addAssignment, updateAssignment } from "./reducer";
+import { useEffect, useState } from "react";
+import { addAssignment, setAssignments, updateAssignment } from "./reducer";
+import * as client from "./client";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
@@ -20,26 +21,46 @@ export default function AssignmentEditor() {
     const [availableFrom, setAvailableFrom] = useState(existingAssignment?.availableFrom || "");
     const [availableUntil, setAvailableUntil] = useState(existingAssignment?.availableUntil || "");
 
-    const handleSave = () => {
-        const newAssignment = {
-          _id: aid || new Date().getTime().toString(),
-          title,
-          description,
-          points,
-          dueDate,
-          availableFrom,
-          availableUntil,
-          course: cid,
-        };
+    // const fetchAssignments = async () => {
+    //     const assignments = await client.findAssignmentsForCourse(cid as string);
+    //     dispatch(setAssignments(assignments));
+    //   };
+    // useEffect(() => {
+    // fetchAssignments();
+    // }, []);    
+
+    // const createAssignment = async (assignment: any) => {
+    //     const newAssignment = await client.createAssignment(cid as string, assignment);
+    //     dispatch(addAssignment(newAssignment));
+    //   };
+
+    const saveAssignment = async () => {
+
+        const assignment = {
+        title,
+        description,
+        points,
+        dueDate,
+        availableFrom,
+        availableUntil
+    };
+
+        // const newAssignment = await client.createAssignment(cid as string, assignment);
     
         if (existingAssignment) {
-          dispatch(updateAssignment(newAssignment));
+            const status = await client.updateAssignment(cid as string, { ...assignment, _id: existingAssignment._id });
+            dispatch(updateAssignment(assignment));
         } else {
-          dispatch(addAssignment(newAssignment));
+            const newAssignment = await client.createAssignment(cid as string, assignment);
+            dispatch(addAssignment(newAssignment));
         }
-    
         navigate(`/Kanbas/Courses/${cid}/Assignments`);
       };
+    
+    // const saveAssignment = async (assignment: any) => {
+    // const status = await client.updateAssignment(cid as string, assignment);
+    // dispatch(updateAssignment(assignment));
+    // };
 
     return (
     <div id="wd-assignments-editor">
@@ -58,20 +79,7 @@ export default function AssignmentEditor() {
             className="form-control" 
             rows={8}
             value={description ? description: "Enter assignment description..."}
-            onChange={(e) => setDescription(e.target.value)}
-        //     defaultValue={`
-        // The assignment is available online
-
-        // Submit a link to the landing page of your Web application running on Netlify.
-
-        // The landing page should include the following:
-
-        // - Your full name and section
-        // -  Links to each lab assignment
-        // - Link to the Kanban application
-        // - Links to all relevant source code repositories
-        // - The Kanban application should include a link to navigate back to the landing page.`}
-            >
+            onChange={(e) => setDescription(e.target.value)}>
             </textarea>
         </div>
         <div className="form-group row mb-3">
@@ -190,7 +198,7 @@ export default function AssignmentEditor() {
         </div>
         <br />
         <hr />
-        <button className="btn btn-danger float-end" onClick={handleSave}>
+        <button className="btn btn-danger float-end" onClick={saveAssignment}>
         Save
         </button>
         <button className="btn btn-secondary float-end me-1" onClick={() => navigate(`/Kanbas/Courses/${cid}/Assignments`)}>

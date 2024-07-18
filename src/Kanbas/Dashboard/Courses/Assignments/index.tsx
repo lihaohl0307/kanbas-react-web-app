@@ -12,8 +12,9 @@ import { Link } from "react-router-dom";
 import Editor from "./AssignmentEditor";
 import AssignmentEditor from "./AssignmentEditor";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { deleteAssignment } from "./reducer";
+import { useEffect, useState } from "react";
+import { deleteAssignment, setAssignments } from "./reducer";
+import * as client from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -24,6 +25,14 @@ export default function Assignments() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchAssignments = async () => {
+        const assignments = await client.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(assignments));
+    };
+    fetchAssignments();
+  }, [cid, dispatch]);
+
   const handleDelete = (assignmentId: string) => {
     setSelectedAssignmentId(assignmentId);
     setShowDeleteDialog(true);
@@ -31,11 +40,19 @@ export default function Assignments() {
 
   const confirmDelete = () => {
     if (selectedAssignmentId) {
-      dispatch(deleteAssignment(selectedAssignmentId));
+      // dispatch(deleteAssignment(selectedAssignmentId));
+      removeAssignment(selectedAssignmentId)
     }
     setShowDeleteDialog(false);
     setSelectedAssignmentId(null);
   };
+
+  // send delete request to server
+  const removeAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+  
   return (
       <div id="wd-assignments">
         <div className="d-flex flex-row">
