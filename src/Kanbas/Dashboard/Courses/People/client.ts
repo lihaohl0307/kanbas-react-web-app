@@ -23,4 +23,19 @@ export const findUserById = async (id: string) => {
     return response.data;
   };
   
+export const deleteUser = async (userId: string) => {
+    const response = await axios.delete( `${USERS_API}/${userId}` );
+    return response.data;
+};
+
+export const updateUser = async (user: any) => {
+    const response = await axios.put(`${USERS_API}/${user._id}`, user);
+    return response.data;
+};
+
+export const createUser = async (user: any) => {
+    const response = await axios.post(`${USERS_API}`, user);
+    return response.data;
+  };
+  
   

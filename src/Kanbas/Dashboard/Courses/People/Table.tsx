@@ -3,15 +3,28 @@ import * as client from "./client";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import PeopleDetails from "./Details";
+import { FaPlus } from "react-icons/fa";
 export default function PeopleTable() {
     const { cid } = useParams();
     const [users, setUsers] = useState<any[]>([]);
     const [role, setRole] = useState("");
     const [name, setName] = useState("");
 
+    const createUser = async () => {
+        const user = await client.createUser({
+          firstName: "New",
+          lastName: `User${users.length + 1}`,
+          username: `newuser${Date.now()}`,
+          password: "password123",
+          section: "S101",
+          role: "STUDENT",
+        });
+        setUsers([...users, user]);
+      };    
+
     const fetchUsers = async () => {
-    const users = await client.findAllUsers();
-    setUsers(users);
+        const users = await client.findAllUsers();
+        setUsers(users);
     };
 
     const filterUsersByRole = async (role: string) => {
@@ -40,7 +53,13 @@ export default function PeopleTable() {
 
     return (
     <div id="wd-people-table">
-        <PeopleDetails />
+        <PeopleDetails fetchUsers={fetchUsers}/>
+        
+        <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
+            <FaPlus className="me-2" />
+            People
+        </button>
+
         <input onChange={(e) => filterUsersByName(e.target.value)} placeholder="Search people"
              className="form-control float-start w-25 me-2 wd-filter-by-name" />
 
@@ -62,7 +81,7 @@ export default function PeopleTable() {
                 {users.map((user: any) => ( <tr key={user._id}>
                     <td className="wd-full-name text-nowrap">
                         <Link to={`/Kanbas/Courses/${cid}/People/${user._id}`}>
-                            <span className="wd-first-name">{user.firstName}</span>
+                            <span className="wd-first-name">{user.firstName}</span>&nbsp;
                             <span className="wd-last-name">{user.lastName}</span>
                         </Link>
                     </td>
