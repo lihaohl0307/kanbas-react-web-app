@@ -32,7 +32,7 @@ export default function Dashboard(
           <div className="row row-cols-1 row-cols-md-4 row-cols-lg-6 row-cols-xl-8">
             {courses.map((course) => (
               <div className="wd-dashboard-course col" style={{ width: "300px", marginBottom: "30px"}}>
-                <Link to={`/Kanbas/Courses/${course._id}/Home`} className="text-decoration-none">
+                <Link to={`/Kanbas/Courses/${course.number}/Home`} className="text-decoration-none">
                   <div className="card rounded-3 overflow-hidden">
                     <img src="https://www.popwebdesign.net/popart_blog/wp-content/uploads/2018/03/reactjs.jpg" height={160} />
                     <div className="card-body">
@@ -43,10 +43,10 @@ export default function Dashboard(
                       <p className="wd-dashboard-course-title card-text" style={{ maxHeight: 53, overflow: "hidden" }}>
                         {course.description}
                       </p>
-                      <Link to={`/Kanbas/Courses/${course._id}/Home`} className="btn btn-primary">Go</Link>
+                      <Link to={`/Kanbas/Courses/${course.number}/Home`} className="btn btn-primary">Go</Link>
                       <button onClick={(event) => {
                                         event.preventDefault(); // you want to perform some action without submitting the form, you call event.preventDefault() to prevent the form submission.
-                                        deleteCourse(course._id);}} 
+                                        deleteCourse(course.number);}} 
                               className="btn btn-danger float-end"
                               id="wd-delete-course-click">
                               Delete

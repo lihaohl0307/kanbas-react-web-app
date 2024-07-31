@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import store from "./store";
 import * as client from "./Dashboard/Courses/client"
+import Account from "./Account";
 
 export default function Kanbas() {
     const [courses, setCourses] = useState<any []>([]);
@@ -23,9 +24,13 @@ export default function Kanbas() {
     }, []);
   
     const [course, setCourse] = useState<any>({
-      _id: "0", name: "New Course", number: "New Number",
+      // id : "0",
+      name: "New Course", number: "New Number",
       startDate: "2023-09-10", endDate: "2023-12-15",
-      image: "/images/reactjs.jpg", description: "New Description"
+      department: "New Department",
+      credits: 4,
+      // image: "/images/reactjs.jpg", 
+      description: "New Description"
     });
 
     // const addNewCourse = () => {
@@ -83,7 +88,7 @@ export default function Kanbas() {
             <div className="flex-fill p-4"> 
               <Routes>
                   <Route path="/" element={<Navigate to="Dashboard" />} />
-                  <Route path="Account" element={<h1>Account</h1>}/>
+                  <Route path="/Account/*" element={<Account />} />
                   <Route path="Dashboard" element={
                     <Dashboard
                     courses={courses}
