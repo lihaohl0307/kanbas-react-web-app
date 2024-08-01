@@ -1,8 +1,12 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import "./index.css";
+import { useSelector } from "react-redux";
 
 export default function AccountNavigation() {
-  const links = ["Signin", "Signup", "Profile"];
+  // if no one is signed in they see the Sign In and Sign Up links, but not the Profile link. 
+  // But if someone is signed in, they should only see the Profile link.
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
   const { pathname } = useLocation();
   return (
     <div id="wd-account-navigation" className="list-group fs-5 rounded-0">
