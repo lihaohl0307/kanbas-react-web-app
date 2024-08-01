@@ -3,8 +3,12 @@ import GreenCheckmark from "./GreenCheckmark";
 import { GoCircleSlash } from "react-icons/go";
 import ModuleEditor from "./ModuleEditor";
 export default function ModulesControls(
-    { moduleName, setModuleName, addModule }:
-    { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }
+    { moduleName, moduleDescription, setModuleName, addModule }:
+    { moduleName: string; moduleDescription: string; 
+        setModuleName: (title: string) => void; 
+        addModule: () => void; 
+        setModuleDescription: (title: string) => void; 
+    }
 ) {
     return (
         <div id="wd-modules-controls" className="text-nowrap">

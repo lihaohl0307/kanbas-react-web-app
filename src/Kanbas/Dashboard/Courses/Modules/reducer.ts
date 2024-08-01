@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { modules } from "../../../Database";
-
 const initialState = {
   modules: [],
 };
@@ -20,7 +19,7 @@ const modulesSlice = createSlice({
           course: module.course,
         };
         state.modules = [...state.modules, newModule] as any;
-      },
+      },    
 
       deleteModule: (state, { payload: moduleId }) => {
         state.modules = state.modules.filter(
@@ -43,4 +42,8 @@ const modulesSlice = createSlice({
   export const { addModule, deleteModule, updateModule, editModule, setModules } =
     modulesSlice.actions;
   export default modulesSlice.reducer;
+
+function useState<T>(initialCourseState: any): [any, any] {
+  throw new Error("Function not implemented.");
+}
   

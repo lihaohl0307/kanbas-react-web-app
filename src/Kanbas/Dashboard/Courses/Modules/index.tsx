@@ -14,7 +14,8 @@ import * as client from "./client";
 export default function Modules() {
     const { cid } = useParams();
     // const [modules, setModules] = useState<any[]>(db.modules);
-    const [moduleName, setModuleName] = useState("")
+    const [moduleName, setModuleName] = useState("test")
+    const [moduleDescription, setModuleDescription] = useState("test123");
     const { modules } = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
     
@@ -31,7 +32,7 @@ export default function Modules() {
     const createModule = async (module: any) => {
         const newModule = await client.createModule(cid as string, module);
         dispatch(addModule(newModule));
-      };
+    };
     
     const fetchModules = async () => {
         const modules = await client.findModulesForCourse(cid as string);
@@ -45,12 +46,15 @@ export default function Modules() {
     
     return (
     <div id="wd-modules">
-        <ModulesControls moduleName={moduleName} setModuleName={setModuleName} 
-            addModule={() => {
-                createModule({name: moduleName, course: cid});
-                // dispatch(addModule({ name: moduleName, course: cid }));
-                // setModuleName("");
-              }}/>
+        <ModulesControls
+                moduleName={moduleName}
+                setModuleName={setModuleName}
+                moduleDescription={moduleDescription}
+                setModuleDescription={setModuleDescription}
+                addModule={() => {
+                    createModule({ name: moduleName, description: moduleDescription, courseNumber: cid });
+                }}
+            />
         <br /><br /><br /><br />
         <ul id="wd-modules" className="list-group rounded-0">
             {/* filter is used to select only those modules whose course property matches the value of cid. */}

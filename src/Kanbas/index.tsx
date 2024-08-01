@@ -12,7 +12,9 @@ import Account from "./Account";
 
 export default function Kanbas() {
     const [courses, setCourses] = useState<any []>([]);
-    
+    const generateUniqueNumber = () => {
+      return new Date().getTime().toString(); // Using current timestamp as unique number
+    };
     // get data from the server(instead of client side json)
     const fetchCourses = async () => {
       const courses = await client.fetchAllCourses();
@@ -23,15 +25,17 @@ export default function Kanbas() {
       fetchCourses();
     }, []);
   
-    const [course, setCourse] = useState<any>({
-      // id : "0",
-      name: "New Course", number: "New Number",
-      startDate: "2023-09-10", endDate: "2023-12-15",
+    const initialCourseState = {
+      name: "New Course",
+      number: generateUniqueNumber(),
+      startDate: "2023-09-10",
+      endDate: "2023-12-15",
       department: "New Department",
       credits: 4,
-      // image: "/images/reactjs.jpg", 
       description: "New Description"
-    });
+  };
+
+  const [course, setCourse] = useState<any>(initialCourseState);
 
     // const addNewCourse = () => {
     //   const newCourse = {
@@ -41,16 +45,16 @@ export default function Kanbas() {
     const addNewCourse = async () => {
       const newCourse = await client.createCourse(course);
       setCourses([ newCourse, ...courses ]); // refresh page client side new courses will render at the end
-    };
+      setCourse({ ...initialCourseState, number: generateUniqueNumber() }); // Reset course, so we'll have all required field in schema
+    };    
   
-
     // const deleteCourse = (courseId: string) => {
     //   setCourses(courses.filter((course) => course._id !== courseId));
     // };
     const deleteCourse = async (courseId: string) => {
       await client.deleteCourse(courseId);
       setCourses(courses.filter(
-        (c) => c._id !== courseId));
+        (c) => c.number !== courseId));
     };
 
     // const updateCourse = () => {
@@ -76,7 +80,6 @@ export default function Kanbas() {
         })
       );
     };
-  
 
   return (
     <Provider store={store}>
