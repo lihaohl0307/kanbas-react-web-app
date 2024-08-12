@@ -1,0 +1,45 @@
+.quiz-preview-container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .quiz-preview-container .d-flex {
+    justify-content: flex-end;
+  }
+  
+  .quiz-preview-container h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .quiz-details {
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 10px;
+    column-gap: 30px;
+  }
+  
+  .quiz-details div {
+    font-size: 16px;
+  }
+  
+  .table {
+    width: 100%;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  .table thead th {
+    border-bottom: 1px solid #ddd;
+  }
+  

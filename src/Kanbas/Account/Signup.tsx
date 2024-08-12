@@ -5,13 +5,14 @@ import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
 
 export default function Signup() {
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<any>({ role: "STUDENT" }); // Default role is 'STUDENT'
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const signup = async () => {
     try {
+      console.log(user);
       const currentUser = await client.signup(user);
       dispatch(setCurrentUser(currentUser));
       navigate("/Kanbas/Account/Profile");

@@ -8,8 +8,6 @@ import * as client from "./client";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
-    // const assignment = assignments && assignments.find(assignment => assignment._id === aid);
-    // const title = assignment?.title;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
@@ -21,19 +19,6 @@ export default function AssignmentEditor() {
     const [availableFrom, setAvailableFrom] = useState(existingAssignment?.availableFrom || "");
     const [availableUntil, setAvailableUntil] = useState(existingAssignment?.availableUntil || "");
 
-    // const fetchAssignments = async () => {
-    //     const assignments = await client.findAssignmentsForCourse(cid as string);
-    //     dispatch(setAssignments(assignments));
-    //   };
-    // useEffect(() => {
-    // fetchAssignments();
-    // }, []);    
-
-    // const createAssignment = async (assignment: any) => {
-    //     const newAssignment = await client.createAssignment(cid as string, assignment);
-    //     dispatch(addAssignment(newAssignment));
-    //   };
-
     const saveAssignment = async () => {
 
         const assignment = {
@@ -44,8 +29,6 @@ export default function AssignmentEditor() {
         availableFrom,
         availableUntil
     };
-
-        // const newAssignment = await client.createAssignment(cid as string, assignment);
     
         if (existingAssignment) {
             const status = await client.updateAssignment(cid as string, { ...assignment, _id: existingAssignment._id });
@@ -57,11 +40,6 @@ export default function AssignmentEditor() {
         navigate(`/Kanbas/Courses/${cid}/Assignments`);
       };
     
-    // const saveAssignment = async (assignment: any) => {
-    // const status = await client.updateAssignment(cid as string, assignment);
-    // dispatch(updateAssignment(assignment));
-    // };
-
     return (
     <div id="wd-assignments-editor">
         <div className="form-group mb-3">
