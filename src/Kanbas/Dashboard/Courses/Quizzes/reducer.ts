@@ -10,6 +10,7 @@ const quizzesSlice = createSlice({
         setQuizzes: (state, action) => {
             console.log("successful setquiz")
             state.quizzes = action.payload;
+            console.log("successful setquiz 2")
           },
       
         addQuiz: (state, {payload: quizzes}) => {

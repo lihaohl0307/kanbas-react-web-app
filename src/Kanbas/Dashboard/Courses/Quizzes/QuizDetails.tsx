@@ -7,23 +7,26 @@ export default function QuizPreview() {
   const { cid, qid } = useParams();
   const navigate = useNavigate();
   const { quizzes } = useSelector((state: any) => state.quizzesReducer);
+  const currentUser = useSelector((state: any) => state.accountReducer.currentUser);
   const quiz = quizzes.find((quiz: any) => quiz._id === qid);
 
   return (
     <div className="quiz-preview-container">
       <div className="d-flex justify-content-end mb-3">
         <button 
-          className="btn btn-light me-2"
+          className="btn btn-secondary me-2"
           onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/preview`)}
         >
-          Preview
+          {currentUser?.role === "STUDENT" ? "Start" : "Preview"}
         </button>
+        {currentUser?.role !== "STUDENT" && (
         <button 
-          className="btn btn-light"
+          className="btn btn-secondary"
           onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`)}
         >
           Edit
         </button>
+        )}
       </div>
 
       <hr />
@@ -36,7 +39,7 @@ export default function QuizPreview() {
         <div><b>Assignment Group</b>: {quiz?.assignmentGroup}</div>
         <div><b>Shuffle Answers</b>: {quiz?.shuffleAnswers ? "Yes" : "No"}</div>
         <div><b>Time Limit</b>: {quiz?.timeLimit > 0 ? `${quiz.timeLimit} Minutes` : "No"}</div>
-        <div><b>Multiple Attempts</b>: {quiz?.multipleAttempts ? "Yes" : "No"}</div>
+        <div><b>Multiple Attempts</b>: {quiz?.multipleAttempts ? quiz.multipleAttempts : "No"}</div>
         <div><b>View Responses</b>: {quiz?.showCorrectAnswers}</div>
         <div><b>Show Correct Answers</b>: {quiz?.showCorrectAnswers ? "Immediately" : "Later"}</div>
         <div><b>One Question at a Time</b>: {quiz?.oneQuestionAtATime ? "Yes" : "No"}</div>

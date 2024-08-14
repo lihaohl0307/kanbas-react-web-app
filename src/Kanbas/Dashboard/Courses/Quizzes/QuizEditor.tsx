@@ -3,9 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { addQuiz, updateQuiz } from "./reducer";
 import * as client from "./client";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { BsThreeDotsVertical, BsCheckCircle, BsXCircle } from "react-icons/bs";
+import ReactQuill from 'react-quill'; // Import ReactQuill
 import { Link } from "react-router-dom";
 import Questions from "./Questions";
+import axios from "axios";
+
+const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
+const COURSES_API = `${REMOTE_SERVER}/api/courses`; 
 
 export default function QuizEditor() {
   const { cid, qid } = useParams();
@@ -13,19 +18,19 @@ export default function QuizEditor() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { quizzes } = useSelector((state: any) => state.quizzesReducer);
-  const { questions } = useSelector((state: any) => state.questionsReducer);
+  const [questions, setQuestions] = useState<any[]>([]); // Local state for questions
 
   const existingQuiz = quizzes.find((quiz: any) => quiz._id === qid);
   const [activeTab, setActiveTab] = useState("details");
   const [title, setTitle] = useState(existingQuiz?.title || "");
   const [description, setDescription] = useState(existingQuiz?.description || "");
   const [quizType, setQuizType] = useState(existingQuiz?.quizType || "Graded Quiz");
-  const [points, setPoints] = useState(existingQuiz?.points || 100);
+  // const [points, setPoints] = useState(existingQuiz?.points || 100);
   const [assignmentGroup, setAssignmentGroup] = useState(existingQuiz?.assignmentGroup || "Quizzes");
   const [shuffleAnswers, setShuffleAnswers] = useState(existingQuiz?.shuffleAnswers || true);
   const [timeLimit, setTimeLimit] = useState(existingQuiz?.timeLimit || 20);
-  const [multipleAttempts, setMultipleAttempts] = useState(existingQuiz?.multipleAttempts || false);
-  const [showCorrectAnswers, setShowCorrectAnswers] = useState(existingQuiz?.showCorrectAnswers || false);
+  const [multipleAttempts, setMultipleAttempts] = useState(existingQuiz?.multipleAttempts || 1); // Initialize as number
+  const [showCorrectAnswers, setShowCorrectAnswers] = useState(existingQuiz?.showCorrectAnswers || "Immediately");
   const [accessCode, setAccessCode] = useState(existingQuiz?.accessCode || "");
   const [oneQuestionAtATime, setOneQuestionAtATime] = useState(existingQuiz?.oneQuestionAtATime || true);
   const [webcamRequired, setWebcamRequired] = useState(existingQuiz?.webcamRequired || false);
@@ -36,13 +41,32 @@ export default function QuizEditor() {
 
   const isPublished = existingQuiz?.isPublished || false;
 
+  const [totalPoints, setTotalPoints] = useState(0); // State to store total points
+
+   // Directly use the findQuestionsForQuiz function here
+   const findQuestionsForQuiz = async (courseId: string, quizId: string) => {
+    const response = await axios.get(`${COURSES_API}/${courseId}/quizzes/${quizId}/questions`);
+    return response.data;
+  };
+
+  useEffect(() => {
+    const fetchQuestionsAndCalculatePoints = async () => {
+      const fetchedQuestions = await findQuestionsForQuiz(cid as string, qid as string);
+      setQuestions(fetchedQuestions); // Set the questions in local state
+      const total = fetchedQuestions.reduce((sum: number, question: any) => sum + question.points, 0);
+      setTotalPoints(total);
+    };
+
+    fetchQuestionsAndCalculatePoints();
+  }, [cid, qid]);
+
   const saveQuiz = async (publish: boolean = false) => {
     const quiz = {
       _id: existingQuiz?._id,
       title,
       description,
       quizType,
-      points,
+      points: totalPoints,
       assignmentGroup,
       shuffleAnswers,
       timeLimit,
@@ -95,14 +119,21 @@ const renderDetailsTab = () => (
       <label htmlFor="wd-description" className="form-label">
         <b>Quiz Instructions:</b>
       </label>
-      <textarea 
+      {/* <textarea 
       id="wd-description" 
       className="form-control" 
       rows={8}
       value={description ? description: "Enter assignment description..."}
       onChange={(e) => setDescription(e.target.value)}>
-      </textarea>
+      </textarea> */}
+      <ReactQuill 
+        id="wd-description" 
+        value={description ? description: "Enter assignment description..."}
+        onChange={setDescription} 
+      />
     </div>
+
+    
 
     <div className="row">
       <div className="col-md-6">
@@ -173,26 +204,31 @@ const renderDetailsTab = () => (
             <span className="input-group-text">Minutes</span>
           </div>
         )}
-      </div>
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="wd-multiple-attempts"
-          checked={multipleAttempts}
-          onChange={(e) => setMultipleAttempts(e.target.checked)}
-        />
-        <label className="form-check-label" htmlFor="wd-multiple-attempts">Allow Multiple Attempts</label>
-      </div>
-      <div className="form-check">
+        </div>
+        <div className="form-check mb-3">
+          <label className="form-label"><b>Allow Multiple Attempts</b></label>
           <input
-            className="form-check-input"
-            type="checkbox"
-            id="wd-show-correct-answers"
-            checked={showCorrectAnswers}
-            onChange={(e) => setShowCorrectAnswers(e.target.checked)}
+            className="form-control"
+            type="number"
+            id="wd-multiple-attempts"
+            value={multipleAttempts}
+            min="1"
+            onChange={(e) => setMultipleAttempts(Number(e.target.value))}
           />
-          <label className="form-check-label" htmlFor="wd-show-correct-answers">Show Correct Answers</label>
+        </div>
+        <div className="form-group mb-3">
+          <label htmlFor="wd-show-correct-answers" className="form-label"><b>Show Correct Answers</b></label>
+          <select
+            id="wd-show-correct-answers"
+            className="form-select"
+            value={showCorrectAnswers}
+            onChange={(e) => setShowCorrectAnswers(e.target.value)}
+          >
+            <option value="Immediately">Immediately</option>
+            <option value="After First Attempt">After First Attempt</option>
+            <option value="After Quiz Ends">After Quiz Ends</option>
+            <option value="Never">Never</option>
+          </select>
         </div>
         <div className="form-check">
           <input
@@ -329,11 +365,19 @@ return (
       
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <span className="fw-bold">Points: {points}</span>
+          <span className="fw-bold">Points: {totalPoints}</span>
         </div>
         <div className="d-flex align-items-center">
           <span className={`me-2 ${isPublished ? "text-success" : "text-muted"}`}>
-            {isPublished ? "Published" : "Not Published"}
+            {isPublished ? (
+              <>
+                <BsCheckCircle className="me-1" /> Published
+              </>
+            ) : (
+              <>
+                <BsXCircle className="me-1" /> Not Published
+              </>
+            )}
           </span>
           <button className="btn btn-secondary float-end me-2">
             <BsThreeDotsVertical /></button>

@@ -17,12 +17,28 @@ export default function Profile() {
       navigate("/Kanbas/Account/Signin");
     }
   };
+
+  const saveProfile = async () => {
+    try {
+        const updatedProfile = await client.updateProfile(profile);
+        setProfile(updatedProfile);
+        dispatch(setCurrentUser(updatedProfile));
+        alert("Profile updated successfully!");
+    } catch (err) {
+        console.error("Error updating profile:", err);
+        alert("Failed to update profile. Please try again.");
+    }
+};
+
+
   const signout = async () => {
     await client.signout();
     dispatch(setCurrentUser(null));
     navigate("/Kanbas/Account/Signin");
   };
+
   useEffect(() => { fetchProfile(); }, []);
+
   return (
     <div className="wd-profile-screen">
       <h1>Profile</h1>
@@ -56,6 +72,9 @@ export default function Profile() {
                 readOnly  // Make the role field read-only
               />
             </div>
+              <button onClick={saveProfile} className="wd-save-btn btn btn-primary w-100 mb-2">
+                Save
+              </button>
               <button onClick={signout} className="wd-signout-btn btn btn-danger w-100">
                 Sign out
               </button>

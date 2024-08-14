@@ -25,6 +25,8 @@ export default function Dashboard({
   const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
   const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 
+  console.log(currentUser);
+  
   useEffect(() => {
     if (currentUser.role === "STUDENT" && currentUser.coursesEnrolled.length > 0) {
       const fetchEnrolledCourses = async () => {
